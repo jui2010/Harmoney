@@ -16,6 +16,7 @@ import store from './redux/store'
 
 // pages
 import home from './pages/home'
+import newCustomer from './pages/newCustomer'
 import welcome from './pages/welcome'
 // import profile from './pages/profile'
 
@@ -34,6 +35,7 @@ class App extends Component{
               <Switch>
                 <Route exact path="/" component={welcome} />
                 <Route exact path="/home" component={home} />
+                <Route exact path="/newCustomer" component={newCustomer} />
                 {/* <Route exact path="/profile" component={profile} /> */}
               </Switch>
             </div>
