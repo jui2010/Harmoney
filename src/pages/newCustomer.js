@@ -40,7 +40,9 @@ const styles = (theme) => ({
     textField : {
         // border: '1px solid black',
         // borderRadius: '4px',
-        marginTop : '20px',
+        marginTop : '15px',
+        marginLeft : '20px',
+        marginRight : '20px',
         padding : '5px',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         fontSize : '15px',
@@ -69,7 +71,7 @@ class sales extends Component {
         zipcode : '',
         verificationId : '',
         loanAmount : '',
-        typeOfLoan : ''          
+        purposeOfLoan : ''          
     }
 
     componentDidMount(){
@@ -81,14 +83,47 @@ class sales extends Component {
         event.preventDefault()
         const newCustomer = [
             {
-            "19": {
+            "13": {
+                "value": this.props.data.maxCustomerid + 1  
+            },
+            "14": {
                 "value": this.state.firstName,
             },
-            "20": {
+            "15": {
                 "value": this.state.lastName,
             },
+            "18": {
+                "value": this.state.gender,
+            },
+            "17": {
+                "value": this.state.email,
+            },
             "16": {
-                "value": this.props.data.maxCustomerid + 1
+                "value": this.state.phone,
+            },
+            "19": {
+                "value": this.state.verificationId,
+            },
+            "7": {
+                "value": this.state.street1,
+            },
+            "8": {
+                "value": this.state.street2,
+            },
+            "9": {
+                "value": this.state.city,
+            },
+            "10": {
+                "value": this.state.state,
+            },
+            "11": {
+                "value": this.state.zipcode,
+            },
+            "21": {
+                "value": this.state.loanAmount,
+            },
+            "20": {
+                "value": this.state.purposeOfLoan,
             }
             }
         ]
@@ -105,16 +140,14 @@ class sales extends Component {
         const { classes } = this.props
     
         return (
-          
-            <Grid container style={{border: '1px solid black'}}>
-                <Grid item xs={4}></Grid>
-                <Grid item xs={4}>
-
+        <form noValidate onSubmit ={this.handleSubmit } style={{paddingBottom: '10px'}}>
+            <Grid container style={{border: '1px solid black'}} >
+                <Grid item xs={12}>
                     <Typography variant="h4" className={classes.pageTitle}>
-                        Register a new customer
+                        Apply for a loan
                     </Typography>
-                    <form noValidate onSubmit ={this.handleSubmit } style={{paddingBottom: '10px'}}>
-
+                </Grid>
+{/* 
                     <TextField 
                         id ="agreementid" 
                         label="Agreement ID" 
@@ -135,186 +168,206 @@ class sales extends Component {
                         value={this.props.data.maxCustomerid + 1} 
                         onChange= {this.handleChange} fullWidth                 
                         />
-                        
-                        <TextField 
-                        id ="applicantType" 
-                        name ="applicantType" 
-                        label="Applicant Type" 
-                        type="text"
-                        variant="outlined"
-                        className={classes.textField}
-                        placeholder = "Applicant Type"
-                        value={this.state.applicantType} 
-                        onChange= {this.handleChange} fullWidth 
-                        />
+                         */}
+                
+                <Grid item xs={4}>
+                <TextField 
+                id ="firstName" 
+                name ="firstName" 
+                label="First Name" 
+                type="text" 
+                variant="outlined"
+                placeholder = "First Name"
+                className={classes.textField}
+                value={this.state.firstName} 
+                onChange= {this.handleChange} fullWidth
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="lastName" 
+                name ="lastName" 
+                label="Last Name" 
+                type="text" 
+                variant="outlined"
+                placeholder = "Last Name"
+                className={classes.textField}
+                value={this.state.lastName} 
+                onChange= {this.handleChange} fullWidth 
+                />
+                </Grid>
+                <Grid item xs={4}></Grid>
+                
+                <Grid item xs={4}>
+                <TextField 
+                id ="gender" 
+                name ="gender" 
+                label="Gender" 
+                type="text" 
+                className={classes.textField}
+                variant="outlined"
+                placeholder = "Gender"
+                value={this.state.gender} 
+                onChange= {this.handleChange} fullWidth 
+                />
+                </Grid>
+                <Grid item xs={4}></Grid>
+                <Grid item xs={4}></Grid>
 
-                        <TextField 
-                        id ="firstName" 
-                        name ="firstName" 
-                        label="First Name" 
-                        type="text" 
-                        variant="outlined"
-                        placeholder = "First Name"
-                        className={classes.textField}
-                        value={this.state.firstName} 
-                        onChange= {this.handleChange} fullWidth
-                        />
-
-                        <TextField 
-                        id ="lastName" 
-                        name ="lastName" 
-                        label="Last Name" 
-                        type="text" 
-                        variant="outlined"
-                        placeholder = "Last Name"
-                        className={classes.textField}
-                        value={this.state.lastName} 
-                        onChange= {this.handleChange} fullWidth 
-                        />
-                        
-                        <TextField 
-                        id ="email" 
-                        name ="email" 
-                        label="Email" 
-                        type="email" 
-                        className={classes.textField}
-                        variant="outlined"
-                        placeholder = "Email"
-                        value={this.state.email} 
-                        onChange= {this.handleChange} fullWidth 
-                        />
-
-                        <TextField 
-                        id ="gender" 
-                        name ="gender" 
-                        label="Gender" 
-                        type="text" 
-                        className={classes.textField}
-                        variant="outlined"
-                        placeholder = "Gender"
-                        value={this.state.gender} 
-                        onChange= {this.handleChange} fullWidth 
-                        />
-
-                        <TextField 
-                        id ="phone" 
-                        name ="phone" 
-                        label="Phone Number" 
-                        type="numeric" 
-                        placeholder="Phone Number" 
-                        variant="outlined"
-                        className={classes.textField}
-                        value={this.state.phone} 
-                        onChange= {this.handleChange} fullWidth 
-                        />
-
-                        <TextField 
-                        id ="street1" 
-                        name ="street1" 
-                        label="Address - Street1" 
-                        type="text" 
-                        placeholder="Address - Street1" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.street1} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="street2" 
-                        name ="street2" 
-                        label="Address - Street1" 
-                        type="text" 
-                        placeholder="Address - Street2" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.street2} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="city" 
-                        name ="city" 
-                        label="City" 
-                        type="text" 
-                        placeholder="City" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.city} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="state" 
-                        name ="state" 
-                        label="State" 
-                        type="text" 
-                        placeholder="State" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.state} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="zipcode" 
-                        name ="zipcode" 
-                        label="Zipcode" 
-                        type="text" 
-                        placeholder="Zipcode" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.zipcode} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="verificationId" 
-                        name ="verificationId" 
-                        label="Verification ID" 
-                        type="text" 
-                        placeholder="Verification ID" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.verificationId} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="loanAmount" 
-                        name ="loanAmount" 
-                        label="Loan Amount" 
-                        type="numeric" 
-                        placeholder="Requested Loan Amount" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.loanAmount} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-
-                        <TextField 
-                        id ="typeOfLoan" 
-                        name ="typeOfLoan" 
-                        label="Type of Loan" 
-                        type="text" 
-                        placeholder="Type of Loan" 
-                        className={classes.textField}
-                        variant="outlined"
-                        value={this.state.typeOfLoan} 
-                        onChange= {this.handleChange} fullWidth                         
-                        />
-                        
-                        <Button type="submit" variant="contained" color="secondary" className={classes.button}>
-                            Submit
-                        </Button>
-                        <br />
-                        
-                    </form>
+                <Grid item xs={4}>
+                <TextField 
+                id ="email" 
+                name ="email" 
+                label="Email" 
+                type="email" 
+                className={classes.textField}
+                variant="outlined"
+                placeholder = "Email"
+                value={this.state.email} 
+                onChange= {this.handleChange} fullWidth 
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="phone" 
+                name ="phone" 
+                label="Phone Number" 
+                type="numeric" 
+                placeholder="Phone Number" 
+                variant="outlined"
+                className={classes.textField}
+                value={this.state.phone} 
+                onChange= {this.handleChange} fullWidth 
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="verificationId" 
+                name ="verificationId" 
+                label="Verification ID" 
+                type="text" 
+                placeholder="Verification ID" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.verificationId} 
+                onChange= {this.handleChange} fullWidth                         
+                />
                 </Grid>
 
+                <Grid item xs={4}>
+                <TextField 
+                id ="street1" 
+                name ="street1" 
+                label="Address - Street1" 
+                type="text" 
+                placeholder="Address - Street1" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.street1} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="street2" 
+                name ="street2" 
+                label="Address - Street1" 
+                type="text" 
+                placeholder="Address - Street2" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.street2} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="city" 
+                name ="city" 
+                label="City" 
+                type="text" 
+                placeholder="City" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.city} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>
+
+                <Grid item xs={4}>
+                <TextField 
+                id ="state" 
+                name ="state" 
+                label="State" 
+                type="text" 
+                placeholder="State" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.state} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="zipcode" 
+                name ="zipcode" 
+                label="Zipcode" 
+                type="text" 
+                placeholder="Zipcode" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.zipcode} 
+                onChange= {this.handleChange} fullWidth                         
+                />    
+                </Grid>
                 <Grid item xs={4}></Grid>
-              
-            </Grid>
+
+                <Grid item xs={4}>
+                <TextField 
+                id ="applicantType" 
+                name ="applicantType" 
+                label="Applicant Type" 
+                type="text"
+                variant="outlined"
+                className={classes.textField}
+                placeholder = "Applicant Type"
+                value={this.state.applicantType} 
+                onChange= {this.handleChange} fullWidth 
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="purposeOfLoan" 
+                name ="purposeOfLoan" 
+                label="Purpose of Loan" 
+                type="text" 
+                placeholder="Purpose of Loan" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.typeOfLoan} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField 
+                id ="loanAmount" 
+                name ="loanAmount" 
+                label="Loan Amount" 
+                type="numeric" 
+                placeholder="Requested Loan Amount" 
+                className={classes.textField}
+                variant="outlined"
+                value={this.state.loanAmount} 
+                onChange= {this.handleChange} fullWidth                         
+                />
+                </Grid>             
+                
+                <Button type="submit" variant="contained" color="secondary" className={classes.button}>
+                    Submit
+                </Button>
+                <br />
+            </Grid>  
+        </form>
         )
     }
 }

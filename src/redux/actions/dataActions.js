@@ -10,7 +10,7 @@ var headers = {
 //insert new customer in database
 export const addNewCustomer = (newCustomer, history) => (dispatch) => {
 
-    var body = {"to":"bqxxssmjp",
+    var body = {"to":"bqy73bb8e",
                 "data": newCustomer
                 }
     
@@ -43,7 +43,7 @@ export const getMaxAgreementid = () => (dispatch) => {
         'Content-Type': 'application/json'
     }
     
-    var body = {"from":"bqybp5qaf","select":[6],"sortBy":[{"fieldId":6,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
+    var body = {"from":"bqy73d4sz","select":[6],"sortBy":[{"fieldId":6,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
 
     fetch('https://api.quickbase.com/v1/records/query',
         {
@@ -72,7 +72,7 @@ export const getMaxCustomerid = () => (dispatch) => {
         'Content-Type': 'application/json'
     }
     
-    var body = {"from":"bqxxssmjp","select":[16],"sortBy":[{"fieldId":16,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
+    var body = {"from":"bqy73bb8e","select":[13],"sortBy":[{"fieldId":13,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
 
     fetch('https://api.quickbase.com/v1/records/query',
         {
@@ -85,7 +85,7 @@ export const getMaxCustomerid = () => (dispatch) => {
                 return res.json().then(res => {
                     dispatch({
                         type : GET_MAX_CUSTOMERID,
-                        payload : res.data[0]["16"].value
+                        payload : res.data[0]["13"].value
                     })
                 });
             }
