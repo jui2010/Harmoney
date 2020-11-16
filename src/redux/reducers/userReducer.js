@@ -2,10 +2,11 @@ import {SET_AUTHENTICATED, SET_AUTHENTICATED_USER_INFO} from '../types'
 
 const initialState = {
     authenticatedUser : {
-        firstName:"Jui",
-        lastName:"Thombre",
-        profilePicture:"https://lh3.googleusercontent.com/a-/AOh14GgN7FFpwiW9NW9vvhqax-tyoBY6eVrCUI2BkU0oRr0",
-        email:"jui20oct@gmail.com",
+        firstName:"Vannie",
+        lastName:"Enevold",
+        // profilePicture:"https://lh3.googleusercontent.com/a-/AOh14GgN7FFpwiW9NW9vvhqax-tyoBY6eVrCUI2BkU0oRr0",
+        profilePicture:"",
+        email:"venevold7i@unc.edu",
         customerid : '',
         phone : '',
         gender : '',

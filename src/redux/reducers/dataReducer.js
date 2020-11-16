@@ -1,7 +1,8 @@
-import { GET_MAX_AGREEMENTID, GET_MAX_CUSTOMERID, SET_ALL_USER_LOANS} from '../types'
+import { GET_MAX_AGREEMENTID, GET_MAX_CUSTOMERID, SET_ALL_USER_LOANS, SET_ALL_USER_CASHFLOW} from '../types'
 
 const initialState = {
     allUserLoans : [],
+    allUserCashflow : [],
     maxAgreementid : 1,
     maxCustomerid : 1
 }
@@ -13,6 +14,12 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 allUserLoans : action.payload
+            }
+
+        case SET_ALL_USER_CASHFLOW : 
+            return {
+                ...state,
+                allUserCashflow : action.payload
             }
 
         case GET_MAX_AGREEMENTID : 

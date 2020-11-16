@@ -13,7 +13,14 @@ const styles = (theme) => ({
     ...theme.spread,
     mainGrid : {
         marginTop : '1px'
-    }
+    },
+    section : {
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        // marginTop : '1px',
+        fontWeight : 'bold',
+        fontSize : '30px',
+        // padding : '10px'
+    },
 })
 
 class profile extends Component {
@@ -22,14 +29,14 @@ class profile extends Component {
         var body = {
             "from": "bqzgvp4k5",
             "select": [
-            6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+                6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
             ],
             "where": `{20.CT.${this.props.user.authenticatedUser.email}}`,
             "sortBy": [
-            {
-                "fieldId": 1,
-                "order": "ASC"
-            }
+                {
+                    "fieldId": 1,
+                    "order": "ASC"
+                }
             ]
         }
         this.props.getUserLoans(body)
@@ -51,8 +58,7 @@ class profile extends Component {
                 <Grid container item={true} sm={3} >
                     <UserProfile />
                 </Grid> 
-
-                <Grid container item={true} sm={4}  style={{border: '1px solid black'}}>
+                <Grid container item={true} sm={8}  style={{borderLeft: '1px solid black'}}>
                     {this.renderAllUserLoans()}
                 </Grid>
             </Grid>

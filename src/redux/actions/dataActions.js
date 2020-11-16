@@ -1,4 +1,4 @@
-import {ADD_NEW_CUSTOMER , GET_MAX_AGREEMENTID, GET_MAX_CUSTOMERID, SET_ALL_USER_LOANS} from '../types'
+import {ADD_NEW_CUSTOMER , GET_MAX_AGREEMENTID, GET_MAX_CUSTOMERID, SET_ALL_USER_LOANS, SET_ALL_USER_CASHFLOW} from '../types'
 const { REACT_APP_QB_USER_TOKEN, REACT_APP_QB_REALM } = process.env;
 
 var headers = {
@@ -81,11 +81,6 @@ export const addNewLoanDetailAndApplication = (newLoanDetail, newApplication, hi
 
 //get max agreementid from Loan_details table
 export const getMaxAgreementid = () => (dispatch) => {
-    var headers = {
-        'QB-Realm-Hostname': REACT_APP_QB_REALM,
-        'Authorization': `QB-USER-TOKEN ${REACT_APP_QB_USER_TOKEN}`,
-        'Content-Type': 'application/json'
-    }
     
     var body = {"from":"bqy73d4sz","select":[6],"sortBy":[{"fieldId":6,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
 
@@ -109,16 +104,9 @@ export const getMaxAgreementid = () => (dispatch) => {
         .catch(err => console.log(err))
 }
 
-
-
 //get max customerid from customers table
 export const getMaxCustomerid = () => (dispatch) => {
-    var headers = {
-        'QB-Realm-Hostname': REACT_APP_QB_REALM,
-        'Authorization': `QB-USER-TOKEN ${REACT_APP_QB_USER_TOKEN}`,
-        'Content-Type': 'application/json'
-    }
-    
+
     var body = {"from":"bqy73bb8e","select":[13],"sortBy":[{"fieldId":13,"order":"DESC"}],"options":{"skip":0,"top":1,"compareWithAppLocalTime":false}}
 
     fetch('https://api.quickbase.com/v1/records/query',
@@ -143,11 +131,6 @@ export const getMaxCustomerid = () => (dispatch) => {
 
 //get all loans for authenticated user
 export const getUserLoans = (body) => (dispatch) => {
-    var headers = {
-        'QB-Realm-Hostname': REACT_APP_QB_REALM,
-        'Authorization': `QB-USER-TOKEN ${REACT_APP_QB_USER_TOKEN}`,
-        'Content-Type': 'application/json'
-    }
 
     fetch('https://api.quickbase.com/v1/records/query',
         {
@@ -160,6 +143,31 @@ export const getUserLoans = (body) => (dispatch) => {
                 return res.json().then(res => {
                     dispatch({
                         type : SET_ALL_USER_LOANS,
+                        payload : res.data
+                    })
+                    console.log(res)
+                })
+            }
+            return res.json().then(resBody => Promise.reject({status: res.status, ...resBody}))
+        })
+        .catch(err => console.log(err))
+}
+
+
+//get all cashflow for authenticated user
+export const getUserCashflow = (body) => (dispatch) => {
+
+    fetch('https://api.quickbase.com/v1/records/query',
+        {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(body)
+        })
+        .then(res => {
+            if (res.ok) {
+                return res.json().then(res => {
+                    dispatch({
+                        type : SET_ALL_USER_CASHFLOW,
                         payload : res.data
                     })
                     console.log(res)

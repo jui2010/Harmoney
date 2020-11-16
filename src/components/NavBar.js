@@ -5,6 +5,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import HomeIcon from '@material-ui/icons/Home'
+import PostAddIcon from '@material-ui/icons/PostAdd'
 
 import { Link } from 'react-router-dom'
 
@@ -13,17 +14,19 @@ import { useAuth0 } from "@auth0/auth0-react"
 import store from '../redux/store'
 import { SET_AUTHENTICATED } from '../redux/types'
 
+import logo from '../assets/logo_harmoney.png'
+
 const styles = (theme) => ({
     ...theme.spread,
     root: {
         flexGrow: 1,
     },
     logo : {
-        marginRight: theme.spacing(2),
+        marginRight: theme.spacing(0.5),
     },
     harmoney : {
         fontFamily: 'Bebas Neue',
-        fontSize : '35px',
+        fontSize : '43px',
         marginTop : '5px',
         flexGrow: 1
     },
@@ -77,8 +80,12 @@ const NavBar = (props) => {
                 <Toolbar style={{ height: 50}}>
 
                     {/* harmoney title */}
+                    <a href="/">
+                        <img src={logo} alt="Profile" width="40" height="40" className={classes.logo} />
+                    </a>
+
                     <div className={classes.harmoney}>
-                        HARMONEY
+                        Harmoney
                     </div>
 
                     {/* login */}
@@ -98,6 +105,15 @@ const NavBar = (props) => {
                         <Tooltip title="Home" >
                             <Button color="primary" component = {Link} to="/home" >
                                 <HomeIcon/>
+                            </Button>
+                        </Tooltip>
+                    )} 
+
+                    {/* request new loan */}
+                    {isAuthenticated && ( 
+                        <Tooltip title="New Loan" >
+                            <Button color="primary" component = {Link} to="/newCustomer" >
+                                <PostAddIcon/>
                             </Button>
                         </Tooltip>
                     )} 
