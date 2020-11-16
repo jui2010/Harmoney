@@ -4,11 +4,9 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
-import DashboardIcon from '@material-ui/icons/Dashboard'
 import HomeIcon from '@material-ui/icons/Home'
 
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 
 import { useAuth0 } from "@auth0/auth0-react"
 
@@ -65,13 +63,12 @@ const NavBar = (props) => {
     if(isAuthenticated){
         store.dispatch({type : SET_AUTHENTICATED})
 
-        let userDetails = {
-           firstName : user.given_name,
-           lastName : user.family_name,
-           profilePicture : user.picture,
-           email : user.email,
-           username : user.nickname
-        }
+        // let userDetails = {
+        //    firstName : user.given_name,
+        //    lastName : user.family_name,
+        //    profilePicture : user.picture,
+        //    email : user.email,
+        // }
     }
 
     return (

@@ -7,13 +7,11 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 
 import {connect} from 'react-redux'
-import {addNewCustomer, getMaxCustomerid, getMaxAgreementid} from '../redux/actions/dataActions' 
+import {addNewCustomer, getMaxCustomerid, getMaxAgreementid, addNewLoanDetailAndApplication} from '../redux/actions/dataActions' 
+import {getAuthenticatedUserInfo} from '../redux/actions/userActions' 
 
 const styles = (theme) => ({
     ...theme.spread,
-    section : {
-        padding : '20px'
-    },
     mainDiv : {
         display: 'flex', 
         flexDirection : 'column',
@@ -22,30 +20,42 @@ const styles = (theme) => ({
     },
     pageTitle : {
         margin : '20px 0px 20px auto' ,
-        fontFamily: 'Bebas Neue',
-        fontSize : '27px'
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        fontSize : '27px',
+        fontWeight : 'bold',
+        marginLeft : '20px'
     },
     form : {
-        textAlign : 'center'
+        textAlign : 'center',
+        marginLeft : '20px'
+
     },
     formMain : {
         backgroundColor : '#424242',
     },
     button : {
         fontFamily: 'Bebas Neue',
-        fontSize : '20px',
+        fontSize : '25px',
         marginTop : '10px',
-        marginBottom : '5px'
+        marginBottom : '5px',
+        color : 'white',
+        marginLeft : '620px'
     },
     textField : {
-        // border: '1px solid black',
-        // borderRadius: '4px',
-        marginTop : '15px',
+        marginBottom : '15px',
         marginLeft : '20px',
         marginRight : '20px',
         padding : '5px',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         fontSize : '15px',
+        width : '400px'
+    },
+    section : {
+        padding : '5px',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        fontSize : '15px',
+        fontWeight : 'bold',
+        marginLeft : '20px'
     },
     root: {
         '&.Mui-focused fieldset': {
@@ -58,23 +68,39 @@ const styles = (theme) => ({
 class sales extends Component {
 
     state = {
+        customerid : this.props.user.authenticatedUser.customerid,
+        firstName : this.props.user.authenticatedUser.firstName,
+        lastName : this.props.user.authenticatedUser.lastName,
+        gender : this.props.user.authenticatedUser.gender,
+        email : this.props.user.authenticatedUser.email,
+        phone : this.props.user.authenticatedUser.phone,
+        verificationid : this.props.user.authenticatedUser.verificationid,
+        street1 : this.props.user.authenticatedUser.street1,
+        street2 : this.props.user.authenticatedUser.street2,
+        city : this.props.user.authenticatedUser.city,
+        state : this.props.user.authenticatedUser.state,
+        zipcode : this.props.user.authenticatedUser.zipcode,
+        country : this.props.user.authenticatedUser.country,
         applicantType : '',
-        firstName : '',
-        lastName : '',
-        email : '',
-        gender : '',
-        phone : '',
-        street1 : '',
-        street2 : '',
-        city : '',
-        state : '',
-        zipcode : '',
-        verificationId : '',
         loanAmount : '',
         purposeOfLoan : ''          
     }
 
     componentDidMount(){
+        var body = {
+            "from": "bqy73bb8e",
+            "select": [
+                13,14,15,16,17,18,19,7,8,9,10,11,12
+            ],
+            "where": `{17.CT.${this.props.user.authenticatedUser.email}}`,
+            "sortBy": [
+            {
+                "fieldId": 1,
+                "order": "ASC"
+            }
+            ]
+        }
+        this.props.getAuthenticatedUserInfo(body)
         this.props.getMaxAgreementid()
         this.props.getMaxCustomerid()
     }
@@ -84,7 +110,7 @@ class sales extends Component {
         const newCustomer = [
             {
             "13": {
-                "value": this.props.data.maxCustomerid + 1  
+                "value": this.props.data.maxCustomerid + 1
             },
             "14": {
                 "value": this.state.firstName,
@@ -102,7 +128,7 @@ class sales extends Component {
                 "value": this.state.phone,
             },
             "19": {
-                "value": this.state.verificationId,
+                "value": this.state.verificationid,
             },
             "7": {
                 "value": this.state.street1,
@@ -118,16 +144,42 @@ class sales extends Component {
             },
             "11": {
                 "value": this.state.zipcode,
-            },
-            "21": {
-                "value": this.state.loanAmount,
-            },
-            "20": {
-                "value": this.state.purposeOfLoan,
             }
             }
         ]
-        this.props.addNewCustomer(newCustomer , this.props.history)
+
+        const newApplication = [
+            {
+            "6": {
+                "value": this.props.data.maxAgreementid + 1
+            },
+            "7": {
+                "value": this.props.user.authenticatedUser.customerid === "" ? this.props.data.maxCustomerid + 1 : this.props.user.authenticatedUser.customerid
+            },
+            "8": {
+                "value": this.state.applicantType
+            }
+            }
+        ]
+
+        const newLoanDetail = [
+            {
+            "6": {
+                "value": this.props.data.maxAgreementid + 1
+            },
+            "7": {
+                "value": this.state.purposeOfLoan
+            },
+            "10": {
+                "value": this.state.loanAmount
+            }
+            }
+        ]
+
+        //add customer only if it is a new customer
+        if(this.props.user.authenticatedUser.verificationid === "")
+            this.props.addNewCustomer(newCustomer , this.props.history)
+        this.props.addNewLoanDetailAndApplication(newLoanDetail, newApplication, this.props.history)
     }
 
     handleChange = (event) => {
@@ -147,29 +199,12 @@ class sales extends Component {
                         Apply for a loan
                     </Typography>
                 </Grid>
-{/* 
-                    <TextField 
-                        id ="agreementid" 
-                        label="Agreement ID" 
-                        type="text" 
-                        variant="outlined"
-                        className={classes.textField}
-                        value={this.props.data.maxAgreementid + 1} 
-                        onChange= {this.handleChange} fullWidth
-                        />
 
-                        <TextField 
-                        id ="customerid" 
-                        label="Customer ID" 
-                        type="text" 
-                        variant="outlined"
-                        placeholder = "Customer ID"
-                        className={classes.textField}
-                        value={this.props.data.maxCustomerid + 1} 
-                        onChange= {this.handleChange} fullWidth                 
-                        />
-                         */}
-                
+                <Grid item xs={12}>
+                    <Typography variant="h4" className={classes.section}>
+                        Personal Details
+                    </Typography>
+                </Grid>
                 <Grid item xs={4}>
                 <TextField 
                 id ="firstName" 
@@ -180,7 +215,7 @@ class sales extends Component {
                 placeholder = "First Name"
                 className={classes.textField}
                 value={this.state.firstName} 
-                onChange= {this.handleChange} fullWidth
+                onChange= {this.handleChange} 
                 />
                 </Grid>
                 <Grid item xs={4}>
@@ -207,7 +242,7 @@ class sales extends Component {
                 className={classes.textField}
                 variant="outlined"
                 placeholder = "Gender"
-                value={this.state.gender} 
+                value={this.props.user.authenticatedUser.gender === "" ? this.state.gender : this.props.user.authenticatedUser.gender} 
                 onChange= {this.handleChange} fullWidth 
                 />
                 </Grid>
@@ -223,7 +258,7 @@ class sales extends Component {
                 className={classes.textField}
                 variant="outlined"
                 placeholder = "Email"
-                value={this.state.email} 
+                value={this.props.user.authenticatedUser.email === "" ? this.state.email : this.props.user.authenticatedUser.email}  
                 onChange= {this.handleChange} fullWidth 
                 />
                 </Grid>
@@ -236,24 +271,29 @@ class sales extends Component {
                 placeholder="Phone Number" 
                 variant="outlined"
                 className={classes.textField}
-                value={this.state.phone} 
+                value={this.props.user.authenticatedUser.phone === "" ? this.state.phone : this.props.user.authenticatedUser.phone} 
                 onChange= {this.handleChange} fullWidth 
                 />
                 </Grid>
                 <Grid item xs={4}>
                 <TextField 
-                id ="verificationId" 
-                name ="verificationId" 
+                id ="verificationid" 
+                name ="verificationid" 
                 label="Verification ID" 
                 type="text" 
                 placeholder="Verification ID" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.verificationId} 
+                value={this.props.user.authenticatedUser.verificationid === "" ? this.state.verificationid : this.props.user.authenticatedUser.verificationid} 
                 onChange= {this.handleChange} fullWidth                         
                 />
                 </Grid>
 
+                <Grid item xs={12}>
+                    <Typography variant="h4" className={classes.section}>
+                        Address Details :
+                    </Typography>
+                </Grid>
                 <Grid item xs={4}>
                 <TextField 
                 id ="street1" 
@@ -263,7 +303,7 @@ class sales extends Component {
                 placeholder="Address - Street1" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.street1} 
+                value={this.props.user.authenticatedUser.street1 === "" ? this.state.street1 : this.props.user.authenticatedUser.street1} 
                 onChange= {this.handleChange} fullWidth                         
                 />
                 </Grid>
@@ -276,7 +316,7 @@ class sales extends Component {
                 placeholder="Address - Street2" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.street2} 
+                value={this.props.user.authenticatedUser.street2 === "" ? this.state.street2 : this.props.user.authenticatedUser.street2} 
                 onChange= {this.handleChange} fullWidth                         
                 />
                 </Grid>
@@ -289,7 +329,7 @@ class sales extends Component {
                 placeholder="City" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.city} 
+                value={this.props.user.authenticatedUser.city === "" ? this.state.city : this.props.user.authenticatedUser.city} 
                 onChange= {this.handleChange} fullWidth                         
                 />
                 </Grid>
@@ -303,7 +343,7 @@ class sales extends Component {
                 placeholder="State" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.state} 
+                value={this.props.user.authenticatedUser.state === "" ? this.state.state : this.props.user.authenticatedUser.state} 
                 onChange= {this.handleChange} fullWidth                         
                 />
                 </Grid>
@@ -316,12 +356,17 @@ class sales extends Component {
                 placeholder="Zipcode" 
                 className={classes.textField}
                 variant="outlined"
-                value={this.state.zipcode} 
+                value={this.props.user.authenticatedUser.zipcode === "" ? this.state.zipcode : this.props.user.authenticatedUser.zipcode} 
                 onChange= {this.handleChange} fullWidth                         
                 />    
                 </Grid>
                 <Grid item xs={4}></Grid>
 
+                <Grid item xs={12}>
+                    <Typography variant="h4" className={classes.section}>
+                        Loan Details
+                    </Typography>
+                </Grid>
                 <Grid item xs={4}>
                 <TextField 
                 id ="applicantType" 
@@ -373,7 +418,8 @@ class sales extends Component {
 }
 
 const mapStateToProps = (state) => ({
+    user : state.user,
     data : state.data
 })
 
-export default  connect(mapStateToProps, {addNewCustomer, getMaxCustomerid, getMaxAgreementid})(withStyles(styles)(sales))
+export default  connect(mapStateToProps, {addNewCustomer, getMaxCustomerid, getMaxAgreementid, getAuthenticatedUserInfo, addNewLoanDetailAndApplication})(withStyles(styles)(sales))
